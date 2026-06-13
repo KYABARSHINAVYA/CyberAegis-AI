@@ -10,6 +10,8 @@ export default function Login({ onLogin }) {
 
   const navigate = useNavigate();
 
+  const API = "https://cyberaegis-ai-y3dw.onrender.com";
+
   const handleLogin = async (event) => {
     event.preventDefault();
 
@@ -22,27 +24,32 @@ export default function Login({ onLogin }) {
     setStatus({ msg: "Authenticating credentials...", type: "info" });
 
     try {
-      const API = "https://cyberaegis-ai-y3dw.onrender.com";
+      const response = await axios.post(`${API}/api/auth/login`, {
+        email: email.trim(),
+        password: password,
+      });
 
-const response = await axios.post(`${API}/api/auth/login`, {
-  email: email.trim(),
-  password,
-});
-
+      // store data safely
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
 
-      setStatus({ msg: "Login successful. Opening dashboard...", type: "success" });
+      setStatus({
+        msg: "Login successful. Redirecting...",
+        type: "success",
+      });
 
-      window.setTimeout(() => {
+      setTimeout(() => {
         onLogin?.(response.data.user);
         navigate("/dashboard");
-      }, 350);
+      }, 500);
     } catch (error) {
+      console.log("LOGIN ERROR:", error);
+
       setStatus({
         msg:
           error.response?.data?.message ||
-          "Login service is offline. Start the backend and try again.",
+          error.message ||
+          "Login failed. Check backend connection.",
         type: "error",
       });
     } finally {
@@ -52,82 +59,35 @@ const response = await axios.post(`${API}/api/auth/login`, {
 
   return (
     <main className="auth-page">
-      <section className="auth-panel" aria-label="Login">
-        <div className="auth-brand-row">
-          <div className="auth-brand-mark">AS</div>
-          <div>
-            <div className="auth-site-name">AegisShield AI</div>
-            <div className="auth-site-tag">Security intelligence</div>
-          </div>
-        </div>
-        <p className="auth-eyebrow">Cyber defense portal</p>
-        <h1 className="auth-title">Security Console</h1>
-        <p className="auth-subtitle">
-          Sign in to scan suspicious URLs, messages, QR codes, and media.
-        </p>
+      <section className="auth-panel">
+        <h1>Security Console</h1>
 
         <form onSubmit={handleLogin} className="auth-form">
-          <label className="auth-label" htmlFor="email">
-            Email
-          </label>
           <input
-            id="email"
             type="email"
-            placeholder="analyst@company.com"
+            placeholder="Email"
             value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            className="auth-input"
-            autoComplete="email"
-            autoFocus
+            onChange={(e) => setEmail(e.target.value)}
           />
 
-          <label className="auth-label" htmlFor="password">
-            Password
-          </label>
           <input
-            id="password"
             type="password"
-            placeholder="Enter your password"
+            placeholder="Password"
             value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            className="auth-input"
-            autoComplete="current-password"
+            onChange={(e) => setPassword(e.target.value)}
           />
 
-          <button
-            type="submit"
-            className="auth-button"
-            disabled={loading}
-          >
+          <button type="submit" disabled={loading}>
             {loading ? "Signing in..." : "Sign in"}
           </button>
         </form>
 
-        {status.msg && (
-          <p className={`auth-status auth-status-${status.type}`}>
-            {status.msg}
-          </p>
-        )}
+        {status.msg && <p>{status.msg}</p>}
 
-        <p className="auth-footer">
-          Need analyst access?{" "}
-          <Link to="/register" className="auth-link">
-            Create an account
-          </Link>
+        <p>
+          Need account? <Link to="/register">Register</Link>
         </p>
       </section>
-
-      <aside className="auth-intel" aria-label="Security coverage">
-        <h2>Defense modules</h2>
-        {["URL threat scoring", "Email phishing review", "QR payload analysis", "Media deepfake triage"].map(
-          (item) => (
-            <div key={item} className="auth-module-row">
-              <span className="auth-module-dot" />
-              <span>{item}</span>
-            </div>
-          )
-        )}
-      </aside>
     </main>
   );
 }
