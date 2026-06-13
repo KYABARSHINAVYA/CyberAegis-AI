@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AegisShield AI</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Browser Extension</p>
+        <h1>AegisShield AI</h1>
+      </div>
+      <span id="backendStatus" class="status-dot" title="Backend status"></span>
+    </header>
+
+    <section class="risk-panel">
+      <div>
+        <span class="label">Current Risk</span>
+        <strong id="riskLevel">Idle</strong>
+      </div>
+      <div class="score-ring" id="scoreRing">--</div>
+    </section>
+
+    <nav class="tabs" aria-label="Scanner tools">
+      <button class="tab active" data-tab="urlPanel">URL</button>
+      <button class="tab" data-tab="emailPanel">Email</button>
+      <button class="tab" data-tab="qrPanel">QR</button>
+    </nav>
+
+    <section id="urlPanel" class="panel active">
+      <div class="input-row">
+        <input id="urlInput" type="url" placeholder="https://example.com/login">
+        <button id="scanCurrentUrl" class="icon-button" title="Use current tab">URL</button>
+      </div>
+      <button id="scanUrl" class="primary">Scan URL</button>
+    </section>
+
+    <section id="emailPanel" class="panel">
+      <textarea id="emailInput" rows="5" placeholder="Paste email, SMS, or message content"></textarea>
+      <textarea id="headersInput" rows="3" placeholder="Optional email headers"></textarea>
+      <button id="scanEmail" class="primary">Scan Email</button>
+    </section>
+
+    <section id="qrPanel" class="panel">
+      <textarea id="qrInput" rows="4" placeholder="Paste decoded QR text or URL"></textarea>
+      <div class="split-actions">
+        <button id="scanQr" class="primary">Verify QR</button>
+        <button id="detectPageQr" class="secondary">Find Page QR</button>
+      </div>
+    </section>
+
+    <section class="tools">
+      <button id="openThreatCenter" class="secondary">Live Threat Center</button>
+      <button id="sandboxAnalysis" class="secondary">Sandbox Analysis</button>
+      <button id="sendTelegram" class="secondary">Telegram Alert</button>
+    </section>
+
+    <section id="result" class="result" aria-live="polite">
+      Select a scan type to begin.
+    </section>
+  </main>
+
+  <script src="popup.js"></script>
+</body>
+</html>

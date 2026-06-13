@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 620" role="img" aria-labelledby="title desc">
+  <title id="title">AegisShield security shield</title>
+  <desc id="desc">Layered professional shield illustration for the authentication pages.</desc>
+  <defs>
+    <linearGradient id="shieldBody" x1="82" y1="48" x2="438" y2="568" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00ffcc"/>
+      <stop offset="0.48" stop-color="#0099ff"/>
+      <stop offset="1" stop-color="#6d5dfc"/>
+    </linearGradient>
+    <linearGradient id="innerBody" x1="156" y1="124" x2="364" y2="486" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#12223b"/>
+      <stop offset="1" stop-color="#070913"/>
+    </linearGradient>
+    <filter id="softGlow" x="-30%" y="-25%" width="160%" height="150%" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="18" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0  0 0 0 0 1  0 0 0 0 0.8  0 0 0 0.55 0"/>
+      <feBlend in="SourceGraphic" mode="screen"/>
+    </filter>
+  </defs>
+
+  <path d="M260 36 452 108v151c0 154-79 264-192 323C147 523 68 413 68 259V108L260 36Z" fill="#07111f" opacity="0.64"/>
+  <path d="M260 48 432 113v140c0 139-70 239-172 293C158 492 88 392 88 253V113L260 48Z" fill="url(#shieldBody)" filter="url(#softGlow)"/>
+  <path d="M260 94 388 142v108c0 112-50 191-128 236-78-45-128-124-128-236V142l128-48Z" fill="url(#innerBody)" stroke="rgba(255,255,255,0.3)" stroke-width="8"/>
+
+  <path d="M260 130v312c57-38 88-102 88-190v-80l-88-42Z" fill="#101b31" opacity="0.85"/>
+  <path d="M205 286l39 39 82-96" fill="none" stroke="#00ffcc" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M175 186h58M287 186h58M175 392h58M287 392h58" stroke="#00f0ff" stroke-width="10" stroke-linecap="round" opacity="0.65"/>
+  <path d="M154 248h56M310 248h56M154 330h56M310 330h56" stroke="#ffffff" stroke-width="6" stroke-linecap="round" opacity="0.22"/>
+</svg>

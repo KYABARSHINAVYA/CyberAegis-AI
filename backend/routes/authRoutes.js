@@ -1,0 +1,118 @@
+import express from "express";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
+import User from "../models/user.js";
+
+const router = express.Router();
+const memoryUsers = [];
+
+const toPublicUser = (user) => ({
+  id: user._id || user.id,
+  name: user.name,
+  email: user.email,
+  createdAt: user.createdAt,
+});
+
+const isMongoReady = () => mongoose.connection.readyState === 1;
+
+const signToken = (id) =>
+  jwt.sign(
+    { id },
+    process.env.JWT_SECRET || "aegis-dev-secret",
+    { expiresIn: "1d" }
+  );
+
+// ================= REGISTER =================
+router.post("/register", async (req, res) => {
+  try {
+    const name = req.body.name?.trim();
+    const email = req.body.email?.trim().toLowerCase();
+    const password = req.body.password;
+
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "Name, email, and password are required" });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({ message: "Password must be at least 6 characters" });
+    }
+
+    const existingUser = isMongoReady()
+      ? await User.findOne({ email })
+      : memoryUsers.find((user) => user.email === email);
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    if (!isMongoReady()) {
+      memoryUsers.push({
+        id: `${Date.now()}`,
+        name,
+        email,
+        password: hashedPassword,
+        createdAt: new Date(),
+      });
+
+      return res.status(201).json({
+        message: "Registered successfully. Please login.",
+      });
+    }
+
+    const user = new User({
+      name,
+      email,
+      password: hashedPassword,
+    });
+
+    await user.save();
+
+    // ❌ IMPORTANT: DO NOT LOGIN USER HERE
+    return res.status(201).json({
+      message: "Registered successfully. Please login.",
+    });
+
+  } catch (err) {
+    return res.status(500).json({ message: "Server error" });
+  }
+});
+
+
+// ================= LOGIN =================
+router.post("/login", async (req, res) => {
+  try {
+    const email = req.body.email?.trim().toLowerCase();
+    const password = req.body.password;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password are required" });
+    }
+
+    const user = isMongoReady()
+      ? await User.findOne({ email })
+      : memoryUsers.find((entry) => entry.email === email);
+    if (!user) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    const token = signToken(user._id || user.id);
+
+    res.json({
+      message: "Login successful",
+      token,
+      user: toPublicUser(user),
+    });
+
+  } catch (err) {
+    return res.status(500).json({ message: "Server error" });
+  }
+});
+
+export default router;

@@ -1,0 +1,28 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bodyGlow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#E0F2FE" />
+    </linearGradient>
+    <linearGradient id="panelGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#E0F2FE" />
+      <stop offset="100%" stop-color="#BAE6FD" />
+    </linearGradient>
+    <linearGradient id="eyeGlow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#7DD3FC" />
+    </linearGradient>
+  </defs>
+  <rect x="20" y="15" width="80" height="90" rx="20" fill="url(#bodyGlow)" stroke="#BAE6FD" stroke-width="4" />
+  <rect x="32" y="26" width="56" height="44" rx="14" fill="#FFFFFF" stroke="#7DD3FC" stroke-width="3" />
+  <rect x="40" y="32" width="40" height="20" rx="10" fill="url(#panelGrad)" />
+  <circle cx="45" cy="60" r="10" fill="url(#eyeGlow)" stroke="#38BDF8" stroke-width="3" />
+  <circle cx="75" cy="60" r="10" fill="url(#eyeGlow)" stroke="#38BDF8" stroke-width="3" />
+  <path d="M44 78C44 80.2091 45.7909 82 48 82H72C74.2091 82 76 80.2091 76 78V76C76 73.7909 74.2091 72 72 72H48C45.7909 72 44 73.7909 44 76V78Z" fill="#DBEAFE" stroke="#93C5FD" stroke-width="2" />
+  <path d="M48 76C48 75.4477 48.4477 75 49 75H71C71.5523 75 72 75.4477 72 76C72 76.5523 71.5523 77 71 77H49C48.4477 77 48 76.5523 48 76Z" fill="#0F172A" opacity="0.7" />
+  <rect x="34" y="14" width="16" height="16" rx="8" fill="#BAE6FD" stroke="#93C5FD" stroke-width="2" />
+  <rect x="70" y="14" width="16" height="16" rx="8" fill="#BAE6FD" stroke="#93C5FD" stroke-width="2" />
+  <circle cx="60" cy="45" r="5" fill="#FFFFFF" stroke="#38BDF8" stroke-width="2" />
+  <path d="M38 100C38 96.6863 40.6863 94 44 94H76C79.3137 94 82 96.6863 82 100V104H38V100Z" fill="#93C5FD" opacity="0.8" />
+  <path d="M52 40C52 38.8954 52.8954 38 54 38H66C67.1046 38 68 38.8954 68 40V42H52V40Z" fill="#38BDF8" />
+</svg>
