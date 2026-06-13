@@ -22,10 +22,13 @@ export default function Login({ onLogin }) {
     setStatus({ msg: "Authenticating credentials...", type: "info" });
 
     try {
-      const response = await axios.post("/api/auth/login", {
-        email: email.trim(),
-        password,
-      });
+      cconst response = await axios.post(
+  "https://cyberaegis-ai-y3dw.onrender.com/api/auth/login",
+  {
+    email: email.trim(),
+    password,
+  }
+);
 
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));

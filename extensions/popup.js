@@ -1,4 +1,4 @@
-const API_BASE = "http://127.0.0.1:5000";
+const API_BASE = "https://cyberaegis-ai-y3dw.onrender.com";
 const THREAT_CENTER_URL = "http://localhost:5173/dashboard";
 
 let lastReport = null;
