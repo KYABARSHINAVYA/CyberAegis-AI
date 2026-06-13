@@ -17,6 +17,20 @@ def scan_url():
         "status":status,
         "confidence":confidence
     })
+@app.route("/api/auth/login", methods=["POST"])
+def login():
+
+    data = request.json
+
+    email = data.get("email")
+    password = data.get("password")
+
+    return jsonify({
+        "success": True,
+        "user": {
+            "email": email
+        }
+    })
 @app.route("/")
 def home():
     return "Backend is running"
