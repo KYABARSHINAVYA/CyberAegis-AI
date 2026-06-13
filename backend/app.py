@@ -21,12 +21,11 @@ def scan_url():
 def login():
 
     data = request.json
-
     email = data.get("email")
     password = data.get("password")
 
     return jsonify({
-        "success": True,
+        "token": "demo_token",
         "user": {
             "email": email
         }
