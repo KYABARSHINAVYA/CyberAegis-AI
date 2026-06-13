@@ -22,7 +22,7 @@ export default function Login({ onLogin }) {
     setStatus({ msg: "Authenticating credentials...", type: "info" });
 
     try {
-      cconst response = await axios.post(
+      const response = await axios.post(
   "https://cyberaegis-ai-y3dw.onrender.com/api/auth/login",
   {
     email: email.trim(),
