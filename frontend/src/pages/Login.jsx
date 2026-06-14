@@ -59,35 +59,78 @@ export default function Login({ onLogin }) {
 
   return (
     <main className="auth-page">
-      <section className="auth-panel">
-        <h1>Security Console</h1>
+      <section className="auth-panel" aria-label="Sign in">
+        <div className="auth-brand-row">
+          <div className="auth-brand-mark">AS</div>
+          <div>
+            <div className="auth-site-name">AegisShield AI</div>
+            <div className="auth-site-tag">Security intelligence</div>
+          </div>
+        </div>
+        <p className="auth-eyebrow">Cyber defense portal</p>
+        <h1 className="auth-title">Security Console</h1>
+        <p className="auth-subtitle">
+          Sign in to continue phishing and deepfake investigation.
+        </p>
 
         <form onSubmit={handleLogin} className="auth-form">
+          <label className="auth-label" htmlFor="email">
+            Email
+          </label>
           <input
+            id="email"
             type="email"
-            placeholder="Email"
+            placeholder="analyst@company.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            className="auth-input"
+            autoComplete="email"
+            autoFocus
           />
 
+          <label className="auth-label" htmlFor="password">
+            Password
+          </label>
           <input
+            id="password"
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            className="auth-input"
+            autoComplete="current-password"
           />
 
-          <button type="submit" disabled={loading}>
+          <button className="auth-button" type="submit" disabled={loading}>
             {loading ? "Signing in..." : "Sign in"}
           </button>
         </form>
 
-        {status.msg && <p>{status.msg}</p>}
+        {status.msg && (
+          <p className={`auth-status auth-status-${status.type}`}>
+            {status.msg}
+          </p>
+        )}
 
-        <p>
-          Need account? <Link to="/register">Register</Link>
+        <p className="auth-footer">
+          Need account?{" "}
+          <Link to="/register" className="auth-link">
+            Register
+          </Link>
         </p>
       </section>
+
+      <aside className="auth-intel" aria-label="Security access">
+        <h2>Access includes</h2>
+        {["Real-time scan dashboard", "Risk history and metrics", "Multi-signal threat review", "Secure analyst session"].map(
+          (item) => (
+            <div key={item} className="auth-module-row">
+              <span className="auth-module-dot" />
+              <span>{item}</span>
+            </div>
+          )
+        )}
+      </aside>
     </main>
   );
 }
