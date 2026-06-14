@@ -141,7 +141,7 @@ code {
   position: absolute;
   inset: 0;
   /* zoomed out vertically and nudged left */
-  background-image: url("./assets/shield-image.webp");
+  background-image: url("./assets/shield.jpeg");
   background-repeat: no-repeat;
   background-size: auto 100%;
   background-position: right bottom;
