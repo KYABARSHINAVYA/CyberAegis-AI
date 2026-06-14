@@ -56,7 +56,7 @@ export default function Register() {
 
   return (
     <main className="auth-page">
-      <section className="auth-panel" aria-label="Create account">
+      <section className="auth-panel auth-panel-register" aria-label="Create account">
         <div className="auth-brand-row">
           <div className="auth-brand-mark">AS</div>
           <div>

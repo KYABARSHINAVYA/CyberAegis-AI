@@ -189,6 +189,42 @@ code {
   z-index: 1;
 }
 
+.auth-panel-register {
+  width: min(100%, 440px);
+  padding: 28px 34px;
+}
+
+.auth-panel-register .auth-brand-row {
+  margin-bottom: 12px;
+}
+
+.auth-panel-register .auth-brand-mark {
+  width: 38px;
+  height: 38px;
+  margin-bottom: 0;
+}
+
+.auth-panel-register .auth-subtitle {
+  margin-bottom: 10px;
+}
+
+.auth-panel-register .auth-form {
+  gap: 6px;
+}
+
+.auth-panel-register .auth-input {
+  padding: 11px 12px;
+  margin-bottom: 5px;
+}
+
+.auth-panel-register .auth-button {
+  padding: 11px;
+}
+
+.auth-panel-register .auth-footer {
+  margin-top: 14px;
+}
+
 .auth-brand-mark {
   width: 44px;
   height: 44px;
@@ -410,6 +446,11 @@ code {
 
   .auth-panel {
     padding: 24px;
+  }
+
+  .auth-panel-register {
+    width: 100%;
+    padding: 22px;
   }
 
   .auth-title {
