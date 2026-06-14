@@ -23,7 +23,7 @@ export default function Login({ onLogin }) {
     setStatus({ msg: "Authenticating credentials...", type: "info" });
 
     try {
-      const response = await axios.postapiUrl("/api/auth/login"), {
+      const response = await axios.post(apiUrl("/api/auth/login"), {
         email: email.trim(),
         password: password,
       });
@@ -120,28 +120,36 @@ export default function Login({ onLogin }) {
       </section>
 
       <aside className="auth-intel auth-login-hero" aria-label="Security access">
-        <div className="auth-hero-kicker">AegisShield AI</div>
-        <h2>Unified threat defense for modern security teams</h2>
-        <p>
-          Correlate suspicious URLs, emails, QR payloads, and media signals in a fast analyst workflow built for real-time response.
-        </p>
+        <div className="auth-access-card">
+          <div className="auth-access-header">
+            <span className="auth-access-icon">AS</span>
+            <div>
+              <span className="auth-access-label">Protected access</span>
+              <strong>Analyst workspace</strong>
+            </div>
+          </div>
 
-        <div className="auth-hero-metrics" aria-label="Security platform highlights">
-          <div>
-            <strong>24/7</strong>
-            <span>Threat monitoring</span>
+          <div className="auth-session-status">
+            <span className="auth-session-dot" />
+            <span>Secure session required</span>
           </div>
-          <div>
-            <strong>AI</strong>
-            <span>Signal analysis</span>
-          </div>
-          <div>
-            <strong>Zero</strong>
-            <span>Trust sessions</span>
-          </div>
-        </div>
 
-        <div className="auth-hero-stack">
+          <div className="auth-hero-metrics" aria-label="Security platform highlights">
+            <div>
+              <strong>24/7</strong>
+              <span>Monitoring</span>
+            </div>
+            <div>
+              <strong>AI</strong>
+              <span>Analysis</span>
+            </div>
+            <div>
+              <strong>Zero</strong>
+              <span>Trust</span>
+            </div>
+          </div>
+
+          <div className="auth-hero-stack">
           {["Real-time scan dashboard", "Risk history and metrics", "Multi-signal threat review", "Secure analyst session"].map(
             (item) => (
               <div key={item} className="auth-module-row">
@@ -150,6 +158,7 @@ export default function Login({ onLogin }) {
               </div>
             )
           )}
+          </div>
         </div>
       </aside>
     </main>
