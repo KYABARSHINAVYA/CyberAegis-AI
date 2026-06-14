@@ -231,7 +231,7 @@ code {
   height: 100vh;
   grid-template-columns: minmax(360px, 400px) minmax(320px, 400px);
   align-items: center;
-  justify-content: center;
+  justify-content: start;
   gap: clamp(22px, 3.2vw, 44px);
   padding: clamp(28px, 5vw, 72px);
   isolation: isolate;
@@ -257,8 +257,8 @@ code {
 
 .auth-panel-login {
   width: min(100%, 400px);
-  grid-column: 1;
-  justify-self: end;
+  grid-column: 2;
+  justify-self: start;
   padding: 30px;
   border-radius: 16px;
   border: 1px solid rgba(0, 255, 204, 0.18);
@@ -370,7 +370,7 @@ code {
 .auth-login-hero {
   min-height: auto;
   width: min(100%, 400px);
-  grid-column: 2;
+  grid-column: 1;
   grid-row: 1;
   justify-self: start;
   padding: 0;
