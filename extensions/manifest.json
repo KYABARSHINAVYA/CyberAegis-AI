@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "AegisShield AI",
+  "name": "CyberAegis AI",
   "description": "Browser extension for URL, email, QR, sandbox, Telegram alert, and global phishing threat map workflows.",
   "version": "1.1.0",
   "permissions": [
@@ -16,7 +16,7 @@
   ],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "AegisShield AI"
+    "default_title": "CyberAegis AI"
   },
   "background": {
     "service_worker": "background.js"

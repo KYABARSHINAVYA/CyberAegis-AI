@@ -62,7 +62,7 @@ export default function Auth({ backendUrl = '', onLogin }) {
         </div>
 
         <h2 className="brand-name" style={{ textAlign: 'center', fontSize: '1.8rem', marginBottom: '0.25rem', display: 'block' }}>
-          AegisShield AI
+          CyberAegis AI
         </h2>
         <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '2rem', fontFamily: 'var(--font-cyber)' }}>
           SECURE FORENSIC NETWORK

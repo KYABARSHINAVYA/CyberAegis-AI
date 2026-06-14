@@ -190,7 +190,7 @@ async function sendTelegramAlert() {
   }
 
   const message = [
-    "AegisShield AI Alert",
+    "CyberAegis AI Alert",
     `Indicator: ${lastIndicator || "Unknown"}`,
     `Threat: ${report.threatLevel} (${report.threatScore}%)`,
     report.summary || "Review required."
@@ -320,7 +320,7 @@ async function maybeNotify(report) {
   if (["HIGH", "CRITICAL"].includes(String(report.threatLevel).toUpperCase())) {
     await chrome.runtime.sendMessage({
       type: "AEGIS_NOTIFY",
-      title: "AegisShield threat detected",
+      title: "CyberAegis threat detected",
       message: `${report.threatLevel} risk (${report.threatScore}%).`
     });
   }

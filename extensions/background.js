@@ -1,5 +1,5 @@
 chrome.runtime.onInstalled.addListener(() => {
-  console.log("AegisShield AI extension installed");
+  console.log("CyberAegis AI extension installed");
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -7,7 +7,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     chrome.notifications.create({
       type: "basic",
       iconUrl: "icon.svg",
-      title: message.title || "AegisShield AI",
+      title: message.title || "CyberAegis AI",
       message: message.message || "Threat detected."
     });
     sendResponse({ ok: true });

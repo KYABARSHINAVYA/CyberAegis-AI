@@ -112,7 +112,7 @@ export default function BulkInvestigation({ addToHistory }) {
           <p style={eyebrowStyle}>Advanced Investigation</p>
           <h2 style={titleStyle}>Bulk Scan & Data Investigation</h2>
           <p style={subtitleStyle}>
-            Paste URLs, domains, or suspicious message snippets. AegisShield classifies each item and builds an investigation view from the evidence.
+            Paste URLs, domains, or suspicious message snippets. CyberAegis classifies each item and builds an investigation view from the evidence.
           </p>
         </div>
         <button type="button" onClick={exportInvestigation} disabled={results.length === 0} style={secondaryButtonStyle}>

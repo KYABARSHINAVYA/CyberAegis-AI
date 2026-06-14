@@ -125,11 +125,11 @@ TELEGRAM_CHAT_ID=7525033541
 
 function buildMessage(item) {
   if (!item) {
-    return "AegisShield AI Alert\nNo recent threat selected. Please review the dashboard.";
+    return "CyberAegis AI Alert\nNo recent threat selected. Please review the dashboard.";
   }
 
   return [
-    "AegisShield AI Alert",
+    "CyberAegis AI Alert",
     `Type: ${String(item.type || "scan").toUpperCase()}`,
     `Severity: ${item.severity || "low"}`,
     `Status: ${item.status || "unknown"}`,

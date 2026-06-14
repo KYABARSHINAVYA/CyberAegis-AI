@@ -290,7 +290,7 @@ export default function Dashboard({ setActiveTab }) {
               🔍 Start Direct Analysis
             </h3>
             <p className="page-subtitle" style={{ marginBottom: '1.25rem', fontSize: '0.96rem' }}>
-              AegisShield AI uses modern forensic modeling to analyze phishing attempts and deepfake assets. Pick a workspace below to inspect files or links:
+              CyberAegis AI uses modern forensic modeling to analyze phishing attempts and deepfake assets. Pick a workspace below to inspect files or links:
             </p>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
               {[

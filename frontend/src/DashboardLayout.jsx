@@ -122,7 +122,7 @@ const lastScanTime =
         body: JSON.stringify({
           to: chatId,
           incident: entry,
-          message: `AegisShield Alert: ${entry.message}\nSeverity: ${entry.severity}\nType: ${entry.type}\nTime: ${entry.time}`
+          message: `CyberAegis Alert: ${entry.message}\nSeverity: ${entry.severity}\nType: ${entry.type}\nTime: ${entry.time}`
         })
       });
     } catch (alertError) {
@@ -216,7 +216,7 @@ const lastScanTime =
     zIndex: 1000
   }}
 >
-        <h2 style={{ color: "#00ffd5", flex: "0 0 auto", whiteSpace: "nowrap" }}>AegisShield AI</h2>
+        <h2 style={{ color: "#00ffd5", flex: "0 0 auto", whiteSpace: "nowrap" }}>CyberAegis AI</h2>
 
         {navItems.map(([tab, label]) => (
           <button

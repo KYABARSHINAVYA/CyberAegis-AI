@@ -62,7 +62,7 @@ export default function Login({ onLogin }) {
         <div className="auth-brand-row">
           <div className="auth-brand-mark">AS</div>
           <div>
-            <div className="auth-site-name">AegisShield AI</div>
+            <div className="auth-site-name">CyberAegis AI</div>
             <div className="auth-site-tag">Security intelligence</div>
           </div>
         </div>

@@ -1,7 +1,7 @@
 {
   "name": "aegis-shield-workspace",
   "version": "1.0.0",
-  "description": "Integrated Workspace for AegisShield AI Phishing and Deepfake Defense",
+  "description": "Integrated Workspace for CyberAegis AI Phishing and Deepfake Defense",
   "private": true,
   "scripts": {
     "install-backend": "npm install --prefix backend",

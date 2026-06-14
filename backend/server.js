@@ -508,17 +508,17 @@ app.post('/api/alerts/telegram', async (req, res) => {
 });
 
 function buildTelegramMessage(incident) {
-  if (!incident) return 'AegisShield Alert: Review your dashboard for recent threats.';
-  return `AegisShield Alert\nType: ${String(incident.type || 'scan').toUpperCase()}\nSeverity: ${incident.severity || 'low'}\nMessage: ${incident.message || 'Please review'}\nTime: ${incident.time || new Date().toLocaleString()}`;
+  if (!incident) return 'CyberAegis Alert: Review your dashboard for recent threats.';
+  return `CyberAegis Alert\nType: ${String(incident.type || 'scan').toUpperCase()}\nSeverity: ${incident.severity || 'low'}\nMessage: ${incident.message || 'Please review'}\nTime: ${incident.time || new Date().toLocaleString()}`;
 }
 
 
 app.get("/", (req, res) => {
-  res.send("🛡️ AegisShield AI Backend is running!");
+  res.send("🛡️ CyberAegis AI Backend is running!");
 });
 
 
 // Start Server
 app.listen(PORT, () => {
-  console.log(`🛡️ AegisShield AI Security Backend running on port ${PORT}`);
+  console.log(`🛡️ CyberAegis AI Security Backend running on port ${PORT}`);
 });
