@@ -52,7 +52,25 @@ def scan_url():
             "error": "Scan failed",
             "details": str(e)
         }), 500
+@app.route("/api/auth/register", methods=["POST"])
+def register():
+    try:
+        data = request.get_json() or {}
 
+        email = data.get("email")
+        password = data.get("password")
+
+        return jsonify({
+            "message": "User registered successfully",
+            "user": {
+                "email": email
+            }
+        }), 200
+
+    except Exception as e:
+        return jsonify({
+            "error": str(e)
+        }), 500
 
 # ---------------- IMPORTANT FOR RENDER ----------------
 if __name__ == "__main__":

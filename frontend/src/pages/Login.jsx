@@ -23,7 +23,7 @@ export default function Login({ onLogin }) {
     setStatus({ msg: "Authenticating credentials...", type: "info" });
 
     try {
-      const response = await axios.post(apiUrl("/api/auth/login"), {
+      const response = await axios.postapiUrl("/api/auth/login"), {
         email: email.trim(),
         password: password,
       });

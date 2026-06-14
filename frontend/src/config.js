@@ -1,4 +1,6 @@
-const rawBaseUrl = import.meta.env.VITE_API_BASE_URL || "";
+const rawBaseUrl =
+  import.meta.env.VITE_API_BASE_URL ||
+  "https://cyberaegis-ai-y3dw.onrender.com";
 
 export const API_BASE_URL = rawBaseUrl.replace(/\/$/, "");
 
