@@ -58,8 +58,8 @@ export default function Login({ onLogin }) {
   };
 
   return (
-    <main className="auth-page">
-      <section className="auth-panel" aria-label="Sign in">
+    <main className="auth-page auth-page-login">
+      <section className="auth-panel auth-panel-login" aria-label="Sign in">
         <div className="auth-brand-row">
           <div className="auth-brand-mark">AS</div>
           <div>
@@ -67,10 +67,10 @@ export default function Login({ onLogin }) {
             <div className="auth-site-tag">Security intelligence</div>
           </div>
         </div>
-        <p className="auth-eyebrow">Cyber defense portal</p>
+        <p className="auth-eyebrow">Enterprise cyber defense portal</p>
         <h1 className="auth-title">Security Console</h1>
         <p className="auth-subtitle">
-          Sign in to continue phishing and deepfake investigation.
+          Sign in to monitor phishing, deepfake, URL, QR, and media threats from one protected workspace.
         </p>
 
         <form onSubmit={handleLogin} className="auth-form">
@@ -120,16 +120,38 @@ export default function Login({ onLogin }) {
         </p>
       </section>
 
-      <aside className="auth-intel" aria-label="Security access">
-        <h2>Access includes</h2>
-        {["Real-time scan dashboard", "Risk history and metrics", "Multi-signal threat review", "Secure analyst session"].map(
-          (item) => (
-            <div key={item} className="auth-module-row">
-              <span className="auth-module-dot" />
-              <span>{item}</span>
-            </div>
-          )
-        )}
+      <aside className="auth-intel auth-login-hero" aria-label="Security access">
+        <div className="auth-hero-kicker">AegisShield AI</div>
+        <h2>Unified threat defense for modern security teams</h2>
+        <p>
+          Correlate suspicious URLs, emails, QR payloads, and media signals in a fast analyst workflow built for real-time response.
+        </p>
+
+        <div className="auth-hero-metrics" aria-label="Security platform highlights">
+          <div>
+            <strong>24/7</strong>
+            <span>Threat monitoring</span>
+          </div>
+          <div>
+            <strong>AI</strong>
+            <span>Signal analysis</span>
+          </div>
+          <div>
+            <strong>Zero</strong>
+            <span>Trust sessions</span>
+          </div>
+        </div>
+
+        <div className="auth-hero-stack">
+          {["Real-time scan dashboard", "Risk history and metrics", "Multi-signal threat review", "Secure analyst session"].map(
+            (item) => (
+              <div key={item} className="auth-module-row">
+                <span className="auth-module-dot" />
+                <span>{item}</span>
+              </div>
+            )
+          )}
+        </div>
       </aside>
     </main>
   );
