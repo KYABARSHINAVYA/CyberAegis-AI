@@ -56,8 +56,8 @@ export default function Register() {
   };
 
   return (
-    <main className="auth-page">
-      <section className="auth-panel auth-panel-register" aria-label="Create account">
+    <main className="auth-page auth-page-login">
+      <section className="auth-panel auth-panel-login auth-panel-register" aria-label="Create account">
         <div className="auth-brand-row">
           <div className="auth-brand-mark">AS</div>
           <div>
@@ -131,16 +131,47 @@ export default function Register() {
         </p>
       </section>
 
-      <aside className="auth-intel" aria-label="Security onboarding">
-        <h2>Access includes</h2>
-        {["Real-time scan dashboard", "Risk history and metrics", "Multi-signal threat review", "Secure analyst session"].map(
-          (item) => (
-            <div key={item} className="auth-module-row">
-              <span className="auth-module-dot" />
-              <span>{item}</span>
+      <aside className="auth-intel auth-login-hero" aria-label="Security onboarding">
+        <div className="auth-access-card">
+          <div className="auth-access-header">
+            <span className="auth-access-icon">AS</span>
+            <div>
+              <span className="auth-access-label">Protected access</span>
+              <strong>Analyst onboarding</strong>
             </div>
-          )
-        )}
+          </div>
+
+          <div className="auth-session-status">
+            <span className="auth-session-dot" />
+            <span>Secure profile creation</span>
+          </div>
+
+          <div className="auth-hero-metrics" aria-label="Security platform highlights">
+            <div>
+              <strong>24/7</strong>
+              <span>Monitoring</span>
+            </div>
+            <div>
+              <strong>AI</strong>
+              <span>Analysis</span>
+            </div>
+            <div>
+              <strong>Zero</strong>
+              <span>Trust</span>
+            </div>
+          </div>
+
+          <div className="auth-hero-stack">
+            {["Real-time scan dashboard", "Risk history and metrics", "Multi-signal threat review", "Secure analyst session"].map(
+              (item) => (
+                <div key={item} className="auth-module-row">
+                  <span className="auth-module-dot" />
+                  <span>{item}</span>
+                </div>
+              )
+            )}
+          </div>
+        </div>
       </aside>
     </main>
   );
