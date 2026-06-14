@@ -240,8 +240,8 @@ code {
 .auth-page-login::before {
   background-size: cover;
   background-position: center;
-  opacity: 0.48;
-  filter: brightness(1.18) saturate(1.08);
+  opacity: 0.72;
+  filter: brightness(1.65) saturate(1.18);
 }
 
 .auth-page-login::after {
@@ -718,7 +718,7 @@ code {
   .auth-page-login::before {
     background-position: center;
     background-size: cover;
-    opacity: 0.24;
+    opacity: 0.58;
   }
 
   .auth-panel-login {
