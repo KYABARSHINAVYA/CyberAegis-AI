@@ -1,11 +1,22 @@
 import { GoogleGenAI } from '@google/genai';
 
+const AI_TIMEOUT_MS = 8000;
+
+function withTimeout(promise, message) {
+  let timeoutId;
+  const timeout = new Promise((_, reject) => {
+    timeoutId = setTimeout(() => reject(new Error(message)), AI_TIMEOUT_MS);
+  });
+
+  return Promise.race([promise, timeout]).finally(() => clearTimeout(timeoutId));
+}
+
 /**
  * Analyzes URLs and domain structures for typosquatting, phishing mimicry, and TLD reputational risk.
  * Falls back to local heuristics if Gemini API key is missing.
  */
 export async function analyzeUrl(inputUrl, apiKey = '') {
-  const finalApiKey = apiKey || process.env.GEMINI_API_KEY;
+  const finalApiKey = apiKey === null ? '' : (apiKey || process.env.GEMINI_API_KEY);
 
   if (finalApiKey) {
     try {
@@ -42,13 +53,16 @@ Provide your detailed analysis in a valid JSON format only. Do not include any m
 }
 `;
 
-      const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: prompt,
-        config: {
-          responseMimeType: 'application/json'
-        }
-      });
+      const response = await withTimeout(
+        ai.models.generateContent({
+          model: 'gemini-2.5-flash',
+          contents: prompt,
+          config: {
+            responseMimeType: 'application/json'
+          }
+        }),
+        'Gemini URL analysis timed out.'
+      );
 
       const responseText = response.text || '';
       return JSON.parse(responseText.trim());

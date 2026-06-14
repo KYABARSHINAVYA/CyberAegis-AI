@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import { apiUrl } from "../config";
 
 export default function Login({ onLogin }) {
   const [email, setEmail] = useState("");
@@ -9,8 +10,6 @@ export default function Login({ onLogin }) {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-
-  const API = "https://cyberaegis-ai-y3dw.onrender.com";
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -24,7 +23,7 @@ export default function Login({ onLogin }) {
     setStatus({ msg: "Authenticating credentials...", type: "info" });
 
     try {
-      const response = await axios.post(`${API}/api/auth/login`, {
+      const response = await axios.post(apiUrl("/api/auth/login"), {
         email: email.trim(),
         password: password,
       });

@@ -36,7 +36,7 @@ const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 
 // Middleware
 app.use(cors({ origin: '*' }));
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 
 // Auth routes
 app.use('/api/auth', authRoutes);
@@ -66,10 +66,39 @@ const upload = multer({ storage });
 
 // Store all analysis results
 const analysisHistory = [];
-// Middleware
-app.use(cors({ origin: '*' }));
-app.use(express.json());
-app.use('/uploads', express.static(uploadsDir));
+
+const fallbackThreatPoints = [
+  { country: 'India', code: 'IN', lat: 20.59, lng: 78.96, detections: 38, maliciousUrls: 14, level: 'CRITICAL' },
+  { country: 'United States', code: 'US', lat: 37.09, lng: -95.71, detections: 31, maliciousUrls: 11, level: 'HIGH' },
+  { country: 'United Kingdom', code: 'GB', lat: 55.37, lng: -3.43, detections: 19, maliciousUrls: 7, level: 'HIGH' },
+  { country: 'Brazil', code: 'BR', lat: -14.23, lng: -51.92, detections: 16, maliciousUrls: 5, level: 'MEDIUM' },
+  { country: 'Singapore', code: 'SG', lat: 1.35, lng: 103.82, detections: 11, maliciousUrls: 4, level: 'MEDIUM' },
+  { country: 'Australia', code: 'AU', lat: -25.27, lng: 133.78, detections: 8, maliciousUrls: 2, level: 'LOW' }
+];
+
+const levelRank = { SAFE: 0, LOW: 1, MEDIUM: 2, HIGH: 3, CRITICAL: 4 };
+
+function pushAnalysis(entry) {
+  analysisHistory.push({
+    ...entry,
+    timestamp: new Date()
+  });
+}
+
+function looksLikeUrl(value) {
+  const trimmed = String(value || '').trim();
+  return /^https?:\/\//i.test(trimmed) ||
+    (/^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/[^\s]*)?$/.test(trimmed) && !trimmed.includes(' '));
+}
+
+function extractDomain(value) {
+  try {
+    const candidate = /^https?:\/\//i.test(value) ? value : `https://${value}`;
+    return new URL(candidate).hostname;
+  } catch {
+    return '';
+  }
+}
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
@@ -97,11 +126,10 @@ app.post('/api/analyze/email', async (req, res) => {
     }
     const report = await analyzeEmail(content, headers || '', apiKey || '');
 
-analysisHistory.push({
+pushAnalysis({
   type: "email",
   score: report.threatScore,
-  threatLevel: report.threatLevel,
-  timestamp: new Date()
+  threatLevel: report.threatLevel
 });
 
 res.json(report);
@@ -120,17 +148,104 @@ app.post('/api/analyze/url', async (req, res) => {
     }
     const report = await analyzeUrl(url, apiKey || '');
 
-analysisHistory.push({
+pushAnalysis({
   type: "url",
   score: report.threatScore,
   threatLevel: report.threatLevel,
-  timestamp: new Date()
+  domain: extractDomain(url)
 });
 
 res.json(report);
   } catch (error) {
     console.error('URL analysis API error:', error);
     res.status(500).json({ error: 'Server error during URL analysis.' });
+  }
+});
+
+// 2b. Bulk Investigation endpoint
+app.post('/api/analyze/bulk', async (req, res) => {
+  try {
+    const { items, apiKey } = req.body;
+    const indicators = Array.isArray(items)
+      ? items.map((item) => String(item || '').trim()).filter(Boolean).slice(0, 50)
+      : [];
+
+    if (indicators.length === 0) {
+      return res.status(400).json({ error: 'At least one indicator is required.' });
+    }
+
+    const results = await Promise.all(indicators.map(async (input, index) => {
+      const id = `${Date.now()}-${index}`;
+
+      try {
+        const detectedType = looksLikeUrl(input) ? 'url' : 'email';
+        const report = detectedType === 'url'
+          ? await analyzeUrl(input, apiKey || '')
+          : await analyzeEmail(input, '', apiKey || '');
+
+        const result = {
+          id,
+          input,
+          detectedType,
+          domain: detectedType === 'url' ? extractDomain(input) : '',
+          threatScore: report.threatScore || 0,
+          threatLevel: report.threatLevel || 'LOW',
+          summary: report.summary || report.overview || 'Analysis completed.',
+          indicators: report.indicators || report.findings || []
+        };
+
+        pushAnalysis({
+          type: detectedType,
+          score: result.threatScore,
+          threatLevel: result.threatLevel,
+          domain: result.domain
+        });
+
+        return result;
+      } catch (error) {
+        console.error('Bulk item analysis failed:', error);
+        return {
+          id,
+          input,
+          detectedType: looksLikeUrl(input) ? 'url' : 'email',
+          domain: extractDomain(input),
+          error: error.message || 'Analysis failed.'
+        };
+      }
+    }));
+
+    const byLevel = {};
+    const byType = {};
+    let failed = 0;
+
+    results.forEach((item) => {
+      if (item.error) {
+        failed += 1;
+        return;
+      }
+
+      const level = String(item.threatLevel || 'LOW').toLowerCase();
+      const type = String(item.detectedType || 'unknown').toLowerCase();
+      byLevel[level] = (byLevel[level] || 0) + 1;
+      byType[type] = (byType[type] || 0) + 1;
+    });
+
+    const highRiskCount = results.filter((item) => {
+      const level = String(item.threatLevel || '').toUpperCase();
+      return level === 'HIGH' || level === 'CRITICAL';
+    }).length;
+
+    res.json({
+      scanned: results.length,
+      failed,
+      highRiskCount,
+      byLevel,
+      byType,
+      results
+    });
+  } catch (error) {
+    console.error('Bulk analysis API error:', error);
+    res.status(500).json({ error: 'Server error during bulk analysis.' });
   }
 });
 
@@ -170,11 +285,10 @@ app.post('/api/analyze/media', upload.single('file'), (req, res) => {
     }
     res.json(report);
 
-   analysisHistory.push({
+   pushAnalysis({
   type: report.mediaType,
   score: report.threatScore,
-  threatLevel: report.threatLevel,
-  timestamp: new Date()
+  threatLevel: report.threatLevel
 });
   } catch (error) {
     console.error('Media analysis API error:', error);
@@ -208,6 +322,12 @@ app.post('/api/analyze/universal', upload.single('file'), async (req, res) => {
         console.warn('Failed to delete temp file:', err.message);
       }
 
+      pushAnalysis({
+        type: report.mediaType,
+        score: report.threatScore,
+        threatLevel: report.threatLevel
+      });
+
       return res.json({
         detectedType: report.mediaType,
         ...report
@@ -228,12 +348,23 @@ app.post('/api/analyze/universal', upload.single('file'), async (req, res) => {
 
     if (isUrl) {
       const report = await analyzeUrl(trimmedText, apiKey || '');
+      pushAnalysis({
+        type: 'url',
+        score: report.threatScore,
+        threatLevel: report.threatLevel,
+        domain: extractDomain(trimmedText)
+      });
       return res.json({
         detectedType: 'url',
         ...report
       });
     } else {
       const report = await analyzeEmail(trimmedText, '', apiKey || '');
+      pushAnalysis({
+        type: 'email',
+        score: report.threatScore,
+        threatLevel: report.threatLevel
+      });
       return res.json({
         detectedType: 'email',
         ...report
@@ -248,6 +379,44 @@ app.post('/api/analyze/universal', upload.single('file'), async (req, res) => {
 app.get("/api/analysis/history", (req, res) => {
   res.json(analysisHistory);
 });
+
+app.get("/api/threat-map", (req, res) => {
+  const now = new Date().toISOString();
+  const activeHistory = analysisHistory.filter((item) => {
+    const level = String(item.threatLevel || '').toUpperCase();
+    return level === 'MEDIUM' || level === 'HIGH' || level === 'CRITICAL';
+  });
+
+  const points = fallbackThreatPoints.map((point, index) => {
+    const matchingSignals = activeHistory.filter((_, signalIndex) => signalIndex % fallbackThreatPoints.length === index);
+    const detections = point.detections + matchingSignals.length;
+    const maliciousUrls = point.maliciousUrls + matchingSignals.filter((item) => item.type === 'url').length;
+    const highestLevel = matchingSignals.reduce((highest, item) => {
+      const candidate = String(item.threatLevel || 'LOW').toUpperCase();
+      return (levelRank[candidate] || 0) > (levelRank[highest] || 0) ? candidate : highest;
+    }, point.level);
+
+    return {
+      ...point,
+      detections,
+      maliciousUrls,
+      level: highestLevel,
+      lastSeen: matchingSignals.at(-1)?.timestamp || now
+    };
+  });
+
+  res.json({
+    generatedAt: now,
+    totals: {
+      countries: points.length,
+      detections: points.reduce((sum, item) => sum + item.detections, 0),
+      maliciousUrls: points.reduce((sum, item) => sum + item.maliciousUrls, 0),
+      hotspots: points.filter((item) => ['HIGH', 'CRITICAL'].includes(item.level)).length
+    },
+    points
+  });
+});
+
 app.get("/webhook", (req, res) => {
   const mode = req.query["hub.mode"];
   const token = req.query["hub.verify_token"];

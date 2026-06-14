@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import { apiUrl } from "../config";
 
 const sampleIndicators = [
   "paypal-security-alert.xyz/login",
@@ -45,7 +46,7 @@ export default function BulkInvestigation({ addToHistory }) {
 
     try {
       const apiKey = localStorage.getItem("gemini_api_key") || "";
-      const response = await fetch("/api/analyze/bulk", {
+      const response = await fetch(apiUrl("/api/analyze/bulk"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ items: indicators, apiKey }),

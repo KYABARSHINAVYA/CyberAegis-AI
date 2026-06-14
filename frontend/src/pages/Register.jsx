@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import { apiUrl } from "../config";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ export default function Register() {
     setStatus({ msg: "Creating analyst profile...", type: "info" });
 
     try {
-      await axios.post("/api/auth/register", {
+      await axios.post(apiUrl("/api/auth/register"), {
         name: name.trim(),
         email: email.trim(),
         password,
