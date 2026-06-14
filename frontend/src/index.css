@@ -121,11 +121,11 @@ code {
   min-height: 100vh;
   width: 100%;
   display: grid;
-  grid-template-columns: minmax(220px, 340px) minmax(180px, 420px);
-  justify-content: start;
+  grid-template-columns: 1fr 1fr;
+  justify-content: stretch;
   align-items: end;
-  gap: 28px;
-  padding: 24px 32px 64px 48px;
+  gap: 0;
+  padding: 24px 0 64px 0;
   background:
     radial-gradient(circle at 15% 10%, rgba(0, 255, 204, 0.12), transparent 28%),
     radial-gradient(circle at 85% 80%, rgba(0, 153, 255, 0.12), transparent 30%),
@@ -177,14 +177,13 @@ code {
 
 .auth-panel {
   width: 100%;
-  max-width: 340px;
-  padding: 14px;
-  max-height: 440px;
+  padding: 40px 48px;
+  max-height: 100%;
   overflow: auto;
-  margin-left: 12px;
-  border-radius: 8px;
+  margin-left: 0;
+  border-radius: 0;
   background: rgba(13, 17, 33, 0.84);
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
+  box-shadow: none;
   backdrop-filter: blur(18px);
   position: relative;
   z-index: 1;
@@ -333,11 +332,11 @@ code {
 
 .auth-intel {
   width: 100%;
-  padding: 28px 40px 28px 28px;
+  padding: 28px 48px;
   border-left: 1px solid rgba(0, 255, 204, 0.2);
   position: relative;
   z-index: 1;
-  min-height: 420px;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -384,9 +383,9 @@ code {
   }
 
   .auth-page {
-    grid-template-columns: minmax(0, 440px);
+    grid-template-columns: 1fr;
     align-content: center;
-    padding: 22px;
+    padding: 22px 0;
   }
 
   .auth-page::before {
