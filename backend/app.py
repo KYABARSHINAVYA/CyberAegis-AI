@@ -4,21 +4,18 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-@app.route("/scan-url",methods=["POST"])
+@app.route("/scan-url", methods=["POST"])
 def scan_url():
+    try:
+        data = request.json or {}
+        url = data.get("url", "")
 
-    data = request.json
-
-    url = data["url"]
-
-    # AI model prediction
-    status = "safe"
-    confidence = 95
-
-    return jsonify({
-        "status":status,
-        "confidence":confidence
-    })
+        return jsonify({
+            "status": "safe",
+            "confidence": 95
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 @app.route("/api/auth/login", methods=["POST"])
 def login():
 
@@ -36,5 +33,7 @@ def login():
 def home():
     return "Backend is running"
 
-if __name__=="__main__":
-    app.run(debug=True)
+if __name__ == "__main__":
+    import os
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
