@@ -905,3 +905,22 @@ textarea {
     flex-direction: column;
   }
 }
+.auth-page {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-image: url("./assets/shield-image.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  margin: 0;
+}
+
+body {
+  margin: 0;
+  background: none;
+}
