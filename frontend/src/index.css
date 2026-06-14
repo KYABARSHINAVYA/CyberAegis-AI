@@ -176,8 +176,8 @@ code {
 }
 
 .auth-panel {
-  width: 100%;
-  padding: 40px 48px;
+  width: min(100%, 440px);
+  padding: 28px 34px;
   max-height: 100%;
   overflow: auto;
   margin-left: 0;
@@ -190,8 +190,8 @@ code {
 }
 
 .auth-panel-register {
-  width: min(100%, 440px);
-  padding: 28px 34px;
+  width: min(100%, 420px);
+  padding: 24px 30px;
 }
 
 .auth-panel-register .auth-brand-row {
