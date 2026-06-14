@@ -240,7 +240,8 @@ code {
 .auth-page-login::before {
   background-size: cover;
   background-position: center;
-  opacity: 0.32;
+  opacity: 0.48;
+  filter: brightness(1.18) saturate(1.08);
 }
 
 .auth-page-login::after {
@@ -257,8 +258,8 @@ code {
 
 .auth-panel-login {
   width: min(100%, 400px);
-  grid-column: 2;
-  justify-self: start;
+  grid-column: 1;
+  justify-self: end;
   padding: 30px;
   border-radius: 16px;
   border: 1px solid rgba(0, 255, 204, 0.18);
@@ -370,7 +371,7 @@ code {
 .auth-login-hero {
   min-height: auto;
   width: min(100%, 400px);
-  grid-column: 1;
+  grid-column: 2;
   grid-row: 1;
   justify-self: start;
   padding: 0;
