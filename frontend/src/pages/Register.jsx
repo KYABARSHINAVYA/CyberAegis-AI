@@ -9,10 +9,12 @@ export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [otp, setOtp] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState({ msg: "", type: "" });
 
-  const handleSubmit = async (event) => {
+  const sendOtp = async (event) => {
     event.preventDefault();
 
     if (!name.trim() || !email.trim() || !password.trim()) {
@@ -26,19 +28,55 @@ export default function Register() {
     }
 
     setLoading(true);
-    setStatus({ msg: "Creating analyst profile...", type: "info" });
+    setStatus({ msg: "Sending verification OTP...", type: "info" });
 
     try {
-      await axios.post(apiUrl("/api/auth/register"), {
+      await axios.post(apiUrl("/api/auth/send-signup-otp"), {
         name: name.trim(),
         email: email.trim(),
         password,
       });
 
-      setStatus({ msg: "Account created. Redirecting to sign in...", type: "success" });
+      setOtpSent(true);
+      setStatus({
+        msg: "OTP sent to your email. Enter it to complete signup.",
+        type: "success",
+      });
+    } catch (error) {
+      setStatus({
+        msg:
+          error.response?.data?.message ||
+          "Verification service is offline. Start the backend and try again.",
+        type: "error",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const verifyOtp = async (event) => {
+    event.preventDefault();
+
+    if (!otp.trim()) {
+      setStatus({ msg: "Enter the OTP sent to your email.", type: "warning" });
+      return;
+    }
+
+    setLoading(true);
+    setStatus({ msg: "Verifying OTP...", type: "info" });
+
+    try {
+      await axios.post(apiUrl("/api/auth/verify-signup-otp"), {
+        email: email.trim(),
+        otp: otp.trim(),
+      });
+
+      setStatus({ msg: "Email verified. Redirecting to sign in...", type: "success" });
       setName("");
       setEmail("");
       setPassword("");
+      setOtp("");
+      setOtpSent(false);
 
       window.setTimeout(() => {
         navigate("/login");
@@ -47,7 +85,7 @@ export default function Register() {
       setStatus({
         msg:
           error.response?.data?.message ||
-          "Registration service is offline. Start the backend and try again.",
+          "OTP verification failed. Try again.",
         type: "error",
       });
     } finally {
@@ -71,7 +109,7 @@ export default function Register() {
           Start a protected workspace for phishing and deepfake investigation.
         </p>
 
-        <form onSubmit={handleSubmit} className="auth-form">
+        <form onSubmit={otpSent ? verifyOtp : sendOtp} className="auth-form">
           <label className="auth-label" htmlFor="name">
             Full name
           </label>
@@ -84,6 +122,7 @@ export default function Register() {
             className="auth-input"
             autoComplete="name"
             autoFocus
+            disabled={otpSent || loading}
           />
 
           <label className="auth-label" htmlFor="email">
@@ -97,6 +136,7 @@ export default function Register() {
             onChange={(event) => setEmail(event.target.value)}
             className="auth-input"
             autoComplete="email"
+            disabled={otpSent || loading}
           />
 
           <label className="auth-label" htmlFor="password">
@@ -110,10 +150,35 @@ export default function Register() {
             onChange={(event) => setPassword(event.target.value)}
             className="auth-input"
             autoComplete="new-password"
+            disabled={otpSent || loading}
           />
 
+          {otpSent && (
+            <>
+              <label className="auth-label" htmlFor="otp">
+                Email OTP
+              </label>
+              <input
+                id="otp"
+                type="text"
+                inputMode="numeric"
+                placeholder="6-digit verification code"
+                value={otp}
+                onChange={(event) => setOtp(event.target.value)}
+                className="auth-input"
+                autoComplete="one-time-code"
+              />
+            </>
+          )}
+
           <button className="auth-button" type="submit" disabled={loading}>
-            {loading ? "Creating account..." : "Create account"}
+            {loading
+              ? otpSent
+                ? "Verifying OTP..."
+                : "Sending OTP..."
+              : otpSent
+                ? "Verify OTP and create account"
+                : "Send verification OTP"}
           </button>
         </form>
 

@@ -1,6 +1,8 @@
 const rawBaseUrl =
   import.meta.env.VITE_API_BASE_URL ||
-  "https://cyberaegis-ai-y3dw.onrender.com";
+  (import.meta.env.DEV
+    ? "http://localhost:5000"
+    : "https://cyberaegis-ai-y3dw.onrender.com");
 
 export const API_BASE_URL = rawBaseUrl.replace(/\/$/, "");
 

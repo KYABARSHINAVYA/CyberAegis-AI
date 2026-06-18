@@ -637,6 +637,23 @@ code {
   text-decoration: none;
 }
 
+.auth-link-button {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  cursor: pointer;
+  display: inline;
+  font: inherit;
+  padding: 0;
+}
+
+.auth-link-button:hover,
+.auth-link-button:active {
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
 .auth-intel {
   width: 100%;
   padding: 28px 48px;

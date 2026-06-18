@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+const isFalseEnv = (value) => String(value || "").trim().toLowerCase() === "false";
+
 const connectDB = async () => {
   if (!process.env.MONGO_URI) {
     console.warn("MongoDB is not configured. Authentication will use in-memory storage.");
@@ -7,7 +9,9 @@ const connectDB = async () => {
   }
 
   try {
-    await mongoose.connect(process.env.MONGO_URI);
+    await mongoose.connect(process.env.MONGO_URI, {
+      tlsAllowInvalidCertificates: isFalseEnv(process.env.MONGO_TLS_REJECT_UNAUTHORIZED),
+    });
 
     console.log("MongoDB connected");
     return true;
