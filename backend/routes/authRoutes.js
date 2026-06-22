@@ -31,6 +31,11 @@ const generateOtp = () => String(Math.floor(100000 + Math.random() * 900000));
 
 const isFalseEnv = (value) => String(value || "").trim().toLowerCase() === "false";
 
+export const getMissingSmtpConfig = () =>
+  ["SMTP_HOST", "SMTP_PORT", "SMTP_USER", "SMTP_PASS", "SMTP_FROM"].filter(
+    (key) => !process.env[key]?.trim()
+  );
+
 const getUserByEmail = async (email) =>
   isMongoReady()
     ? await User.findOne({ email })
@@ -56,8 +61,11 @@ const sendOtpEmail = async ({ to, otp, subject, intro }) => {
   const pass = process.env.SMTP_PASS;
   const from = process.env.SMTP_FROM || user;
 
-  if (!host || !user || !pass || !from) {
-    throw new Error("SMTP is not configured. Add SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, and SMTP_FROM to backend/.env.");
+  const missingSmtpConfig = getMissingSmtpConfig();
+  if (missingSmtpConfig.length > 0) {
+    throw new Error(
+      `SMTP is not configured. Missing ${missingSmtpConfig.join(", ")} in backend/.env.`
+    );
   }
 
   let nodemailer;

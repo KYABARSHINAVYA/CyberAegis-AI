@@ -19,7 +19,7 @@ import {
 import axios from 'axios';
 
 // Routes
-import authRoutes from './routes/authRoutes.js';
+import authRoutes, { getMissingSmtpConfig } from './routes/authRoutes.js';
 
 // Configuration
 const __filename = fileURLToPath(import.meta.url);
@@ -33,6 +33,15 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
+
+const missingSmtpConfig = getMissingSmtpConfig();
+if (missingSmtpConfig.length > 0) {
+  console.warn(
+    `SMTP is not configured. Missing ${missingSmtpConfig.join(", ")} in backend/.env.`
+  );
+} else {
+  console.log("SMTP config loaded for OTP email delivery.");
+}
 
 // Middleware
 app.use(cors({ origin: '*' }));
