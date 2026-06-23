@@ -526,6 +526,31 @@ app.get("/", (req, res) => {
   res.send("🛡️ CyberAegis AI Backend is running!");
 });
 
+import net from "net";
+
+app.get("/test-smtp", (req, res) => {
+  const socket = net.createConnection({
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT),
+  });
+
+  socket.setTimeout(10000);
+
+  socket.on("connect", () => {
+    socket.destroy();
+    res.send("SMTP connection successful");
+  });
+
+  socket.on("timeout", () => {
+    socket.destroy();
+    res.status(500).send("SMTP connection timeout");
+  });
+
+  socket.on("error", (err) => {
+    res.status(500).send(err.message);
+  });
+});
+
 
 // Start Server
 app.listen(PORT, () => {
