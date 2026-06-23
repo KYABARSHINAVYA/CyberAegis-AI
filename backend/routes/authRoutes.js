@@ -55,7 +55,7 @@ const saveMemoryUser = ({ name, email, password }) => {
 
 const sendOtpEmail = async ({ to, otp, subject, intro }) => {
   const host = process.env.SMTP_HOST;
-  const port = Number(process.env.SMTP_PORT || 587);
+  const port = Number(process.env.SMTP_PORT || 465);
   const family = Number(process.env.SMTP_FAMILY || 4);
   const user = process.env.SMTP_USER;
   const pass = process.env.SMTP_PASS;
@@ -75,14 +75,20 @@ const sendOtpEmail = async ({ to, otp, subject, intro }) => {
     throw new Error("Nodemailer is not installed. Run npm install --prefix backend before using SMTP email.");
   }
 
-  const createTransporter = (smtpPort) => nodemailer.createTransport({
+  const createTransporter = (smtpPort) =>
+  nodemailer.createTransport({
     host,
     port: smtpPort,
-    family,
-    secure: smtpPort === 465,
-    auth: { user, pass },
+    secure: true,
+    auth: {
+      user,
+      pass,
+    },
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 10000,
     tls: {
-      rejectUnauthorized: !isFalseEnv(process.env.SMTP_TLS_REJECT_UNAUTHORIZED),
+      rejectUnauthorized: false,
     },
   });
 
@@ -101,15 +107,7 @@ const sendOtpEmail = async ({ to, otp, subject, intro }) => {
     `,
   };
 
-  try {
-    await createTransporter(port).sendMail(mailOptions);
-  } catch (error) {
-    if (port === 587 && error.code === "ECONNREFUSED") {
-      await createTransporter(465).sendMail(mailOptions);
-    } else {
-      throw error;
-    }
-  }
+  await createTransporter(port).sendMail(mailOptions);
 
   return { delivered: true };
 };
