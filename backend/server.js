@@ -551,6 +551,16 @@ app.get("/test-smtp", (req, res) => {
   });
 });
 
+app.get("/smtp-debug", (req, res) => {
+  res.json({
+    host: process.env.SMTP_HOST,
+    port: process.env.SMTP_PORT,
+    user: process.env.SMTP_USER,
+    from: process.env.SMTP_FROM,
+    passExists: !!process.env.SMTP_PASS
+  });
+});
+
 
 // Start Server
 app.listen(PORT, () => {
