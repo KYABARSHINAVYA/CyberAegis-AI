@@ -79,7 +79,7 @@ const sendOtpEmail = async ({ to, otp, subject, intro }) => {
   nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: Number(process.env.SMTP_PORT),
-    secure: Number(process.env.SMTP_PORT) === 465,
+    secure: false,              // ← change here
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
@@ -93,7 +93,6 @@ const sendOtpEmail = async ({ to, otp, subject, intro }) => {
       rejectUnauthorized: false,
     },
   });
-
   const mailOptions = {
     from,
     to,
