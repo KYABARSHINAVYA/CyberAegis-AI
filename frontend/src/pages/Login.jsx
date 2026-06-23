@@ -78,8 +78,15 @@ export default function Login({ onLogin }) {
 
   return (
     <main className="auth-page auth-page-login">
+      
 
       <section className="auth-panel auth-panel-login">
+        <div className="auth-logo-section">
+  <h2 className="auth-project-name">CyberAegis AI</h2>
+  <p className="auth-project-tagline">
+    AI-Powered Phishing & Deepfake Detection Platform
+  </p>
+</div>
 
         <h1 className="auth-title">
           Sign In

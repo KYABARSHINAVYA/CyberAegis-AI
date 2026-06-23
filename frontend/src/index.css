@@ -300,6 +300,7 @@ code {
   font-size: clamp(28px, 3vw, 36px);
   line-height: 1;
   margin-bottom: 12px;
+  text-align: center;
 }
 
 .auth-panel-login .auth-subtitle {
@@ -857,4 +858,65 @@ code {
 
 .auth-panel-register {
     transform: translateX(120px);
+}
+.project-header {
+  position: absolute;
+  top: 35px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 10;
+}
+
+.project-title {
+  margin: 0;
+  font-size: 48px;
+  font-weight: 900;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+
+  background: linear-gradient(90deg, #00ffd5, #00a8ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  text-shadow:
+      0 0 20px rgba(0,255,213,.4),
+      0 0 40px rgba(0,168,255,.25);
+}
+
+.project-subtitle {
+  margin-top: 8px;
+  color: #94a3b8;
+  font-size: 15px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.auth-logo-section {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.auth-project-name {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: 2px;
+
+  background: linear-gradient(135deg, #00ffd5, #00a8ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  text-transform: uppercase;
+
+  text-shadow:
+    0 0 15px rgb(7, 142, 108),
+    0 0 25px rgba(32, 164, 212, 0.025);
+}
+
+.auth-project-tagline {
+  margin-top: 8px;
+  color: #7be7b8;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
