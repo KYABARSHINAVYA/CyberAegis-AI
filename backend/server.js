@@ -19,7 +19,7 @@ import {
 import axios from 'axios';
 
 // Routes
-import authRoutes, { getMissingSmtpConfig } from './routes/authRoutes.js';
+import authRoutes from './routes/authRoutes.js';
 
 // Configuration
 const __filename = fileURLToPath(import.meta.url);
@@ -34,14 +34,7 @@ const PORT = process.env.PORT || 5000;
 
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 
-const missingSmtpConfig = getMissingSmtpConfig();
-if (missingSmtpConfig.length > 0) {
-  console.warn(
-    `SMTP is not configured. Missing ${missingSmtpConfig.join(", ")} in backend/.env.`
-  );
-} else {
-  console.log("SMTP config loaded for OTP email delivery.");
-}
+
 
 // Middleware
 app.use(cors({ origin: '*' }));
@@ -525,42 +518,6 @@ function buildTelegramMessage(incident) {
 app.get("/", (req, res) => {
   res.send("🛡️ CyberAegis AI Backend is running!");
 });
-
-import net from "net";
-
-app.get("/test-smtp", (req, res) => {
-  const socket = net.createConnection({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT),
-  });
-
-  socket.setTimeout(10000);
-
-  socket.on("connect", () => {
-    socket.destroy();
-    res.send("SMTP connection successful");
-  });
-
-  socket.on("timeout", () => {
-    socket.destroy();
-    res.status(500).send("SMTP connection timeout");
-  });
-
-  socket.on("error", (err) => {
-    res.status(500).send(err.message);
-  });
-});
-
-app.get("/smtp-debug", (req, res) => {
-  res.json({
-    host: process.env.SMTP_HOST,
-    port: process.env.SMTP_PORT,
-    user: process.env.SMTP_USER,
-    from: process.env.SMTP_FROM,
-    passExists: !!process.env.SMTP_PASS
-  });
-});
-
 
 // Start Server
 app.listen(PORT, () => {
