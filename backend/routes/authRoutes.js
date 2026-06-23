@@ -52,50 +52,47 @@ const saveMemoryUser = ({ name, email, password }) => {
   memoryUsers.push(user);
   return user;
 };
-
 const sendOtpEmail = async ({ to, otp, subject, intro }) => {
-  const host = process.env.SMTP_HOST;
-  const port = Number(process.env.SMTP_PORT || 465);
-  const family = Number(process.env.SMTP_FAMILY || 4);
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
-  const from = process.env.SMTP_FROM || user;
+  const from = process.env.SMTP_FROM || process.env.SMTP_USER;
 
   const missingSmtpConfig = getMissingSmtpConfig();
+
   if (missingSmtpConfig.length > 0) {
     throw new Error(
-      `SMTP is not configured. Missing ${missingSmtpConfig.join(", ")} in backend/.env.`
+      `SMTP is not configured. Missing ${missingSmtpConfig.join(", ")}`
     );
   }
 
   let nodemailer;
+
   try {
     nodemailer = (await import("nodemailer")).default;
   } catch {
-    throw new Error("Nodemailer is not installed. Run npm install --prefix backend before using SMTP email.");
+    throw new Error(
+      "Nodemailer is not installed. Run npm install in backend."
+    );
   }
 
-  const createTransporter = () =>
-  nodemailer.createTransport({
+  const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT),
-    secure: Number(process.env.SMTP_PORT) === 465,
+    port: 587,
+    secure: false,
+    requireTLS: true,
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
     },
-    connectionTimeout: 30000,
-    greetingTimeout: 30000,
-    socketTimeout: 30000,
-    tls: {
-      rejectUnauthorized: false,
-    },
   });
+
   const mailOptions = {
     from,
     to,
     subject,
-    text: `${intro}\n\nYour OTP is ${otp}. It expires in 10 minutes.\n\nIf you did not request this, ignore this email.`,
+    text: `${intro}
+
+Your OTP is ${otp}. It expires in 10 minutes.
+
+If you did not request this, ignore this email.`,
     html: `
       <div style="font-family:Arial,sans-serif;line-height:1.5;color:#111827">
         <p>${intro}</p>
@@ -106,13 +103,15 @@ const sendOtpEmail = async ({ to, otp, subject, intro }) => {
     `,
   };
 
- const transporter = createTransporter();
+  console.log("Verifying SMTP connection...");
 
-await transporter.verify();
+  await transporter.verify();
 
-console.log("SMTP server is ready");
+  console.log("SMTP verified successfully");
 
-await transporter.sendMail(mailOptions);
+  const info = await transporter.sendMail(mailOptions);
+
+  console.log("Mail sent:", info.messageId);
 
   return { delivered: true };
 };
