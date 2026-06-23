@@ -260,6 +260,7 @@ code {
   width: min(100%, 400px);
   grid-column: 1;
   justify-self: end;
+  
   padding: 30px;
   border-radius: 16px;
   border: 1px solid rgba(0, 255, 204, 0.18);
@@ -849,4 +850,11 @@ code {
   background: #0f172a;
   color: #00ffd5;
   padding: 12px;
+}
+.auth-panel-login {
+    transform: translateX(120px);
+}
+
+.auth-panel-register {
+    transform: translateX(120px);
 }
