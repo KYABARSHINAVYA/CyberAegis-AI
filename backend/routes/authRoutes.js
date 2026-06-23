@@ -77,16 +77,18 @@ const sendOtpEmail = async ({ to, otp, subject, intro }) => {
 
   const createTransporter = () =>
   nodemailer.createTransport({
-    host,
-    port: 465,
-    secure: true,
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT),
+    secure: Number(process.env.SMTP_PORT) === 465,
     auth: {
-      user,
-      pass,
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
     },
-    connectionTimeout: 10000,
-    greetingTimeout: 10000,
-    socketTimeout: 10000,
+    family: 4,
+    connectionTimeout: 30000,
+    greetingTimeout: 30000,
+    socketTimeout: 30000,
+    requireTLS: true,
     tls: {
       rejectUnauthorized: false,
     },
