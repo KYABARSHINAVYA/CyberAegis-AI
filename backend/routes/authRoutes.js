@@ -75,10 +75,10 @@ const sendOtpEmail = async ({ to, otp, subject, intro }) => {
     throw new Error("Nodemailer is not installed. Run npm install --prefix backend before using SMTP email.");
   }
 
-  const createTransporter = (smtpPort) =>
+  const createTransporter = () =>
   nodemailer.createTransport({
     host,
-    port: smtpPort,
+    port: 465,
     secure: true,
     auth: {
       user,
@@ -107,7 +107,7 @@ const sendOtpEmail = async ({ to, otp, subject, intro }) => {
     `,
   };
 
-  await createTransporter(port).sendMail(mailOptions);
+  await createTransporter().sendMail(mailOptions);
 
   return { delivered: true };
 };
